@@ -8,15 +8,15 @@ import lombok.Data;
 public class AccountDTO {
 
 	private Long customerId;
-	
+
 	private Long accountNumber;
-	
+
 	private String accountType;
-	
+
 	private String branchAddress;
-	
+
 	private String createdBy;
-	
+
 	private LocalDateTime createdAt;
-	
+
 }
