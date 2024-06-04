@@ -4,6 +4,7 @@ import java.net.http.HttpHeaders;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -19,20 +20,20 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.organize.AccountService.DTO.ErrorResponseDTO;
 
 @ControllerAdvice
-public class GenericException extends ResponseEntityExceptionHandler {
+public class GenericException {
+	
+	   @ExceptionHandler(MethodArgumentNotValidException.class)
+	    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+			Map<String, String> validationErrors = new HashMap<String, String>();
+			List<ObjectError> listError = ex.getBindingResult().getAllErrors();
+			for (ObjectError li : listError) {
+				String fieldName = ((FieldError) li).getField();
+				validationErrors.put(fieldName, li.getDefaultMessage());
+			}
+			return new ResponseEntity<>(validationErrors, HttpStatus.BAD_REQUEST);
+	    }
+	
 
-	protected ResponseEntity<Object> handleMethodArgumentNotValid(
-			MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-
-		Map<String, String> validationErrors = new HashMap<String, String>();
-		List<ObjectError> listError = ex.getBindingResult().getAllErrors();
-		for (ObjectError li : listError) {
-			String fieldName = ((FieldError) li).getField();
-			String msg = li.getDefaultMessage();
-			validationErrors.put(fieldName, li.getDefaultMessage());
-		}
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST, validationErrors);
-	}
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorResponseDTO> handleGlobalException(Exception exception, WebRequest webRequest) {

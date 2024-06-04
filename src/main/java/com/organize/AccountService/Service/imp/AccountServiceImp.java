@@ -38,8 +38,8 @@ public class AccountServiceImp implements IAccountService {
 					"Customer mobile number already exist. We were not able to creat an account for you."
 							+ customerDTO.getMobileNumber());
 		}
-		customer.setCreatedBy("Vivek");
-		customer.setCreatedAt(LocalDateTime.now());
+		//customer.setCreatedBy("Vivek");
+		//customer.setCreatedAt(LocalDateTime.now());
 		Customer newCustomer = customerRepository.save(customer);
 		
 		Account newAccount2 = accountRepository.save(createNewAccount(newCustomer));
@@ -47,8 +47,8 @@ public class AccountServiceImp implements IAccountService {
 	
 	public Account createNewAccount(Customer customer) {
 		Account newAccount = new Account();
-		newAccount.setCreatedBy("Vivek");
-		newAccount.setCreatedAt(LocalDateTime.now());
+		//newAccount.setCreatedBy("Vivek");
+		//newAccount.setCreatedAt(LocalDateTime.now());
 		newAccount.setCustomerId(customer.getCustomerId());
 		long randomAccNumber = 1000000000L + new Random().nextInt(900000000);
 		newAccount.setAccountNumber(randomAccNumber);
